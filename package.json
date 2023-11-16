@@ -1,0 +1,26 @@
+{
+  "name": "espresso-addict",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "make-steps": "node ./tests/espresso-tests/cypress-tests/_generate-step-definitions.js",
+    "test-cypress": "cypress run --browser chrome",
+    "test-cypress-ui": "cypress open --browser chrome"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": [
+      "./tests/espresso-tests/cypress-tests/step_definitions/**/*.js"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^19.1.0",
+    "@cypress/webpack-preprocessor": "^6.0.0",
+    "cypress": "^13.5.1"
+  }
+}
