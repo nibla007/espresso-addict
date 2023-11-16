@@ -13,7 +13,8 @@
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": [
-      "./tests/espresso-tests/cypress-tests/step_definitions/**/*.js"
+      "./tests/espresso-tests/cypress-tests/step_definitions/**/*.js",
+      "./tests/word-tests/cypress-tests/step_definitions/**/*.js"
     ]
   },
   "author": "",
