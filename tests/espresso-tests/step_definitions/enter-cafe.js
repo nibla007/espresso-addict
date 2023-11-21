@@ -35,9 +35,19 @@ Given('that I am in the cafe', () => {
 });
 
 When('I click the wait button three times', () => {
-  cy.get('ul>li').eq(2).click()
-  cy.get('ul>li').eq(2).click()
-  cy.get('ul>li').eq(2).click()
+  // Change until the barista looks at you
+  function recursion() {
+    cy.get('ul>li').eq(2).click();
+    cy.get('.description').should('not.be.empty');
+    cy.get('.description').then(elements => {
+      let descriptionText = elements.els[0].text();
+      cy.log(descriptionText);
+      if (descriptionText != "You wait. The barista looks at you.") {
+        recursion();
+      }
+    });
+  };
+  recursion();
 });
 
 Then('I should have lost three health', () => {
@@ -74,12 +84,38 @@ Then('all sub scenarios should show eventually', () => {
       shown: false
     }
   ];
-  while (subScenes.filter(x => x.shown).length < 3) {
+  let waitCounter = 0;
+  function recursion() {
     cy.get('ul>li').eq(2).click();
-    cy.get('body').then(elements => {
-      let descriptionText = elements[0].text();
+    cy.get('.description').should('not.be.empty');
+    cy.get('.description').then(elements => {
+      let descriptionText = elements.els[0].text();
       cy.log(descriptionText);
+      subScenes.find(x => x.description === descriptionText).shown = true;
+      if (subScenes.filter(x => x.shown).length < 3) {
+        waitCounter++;
+        expect(waitCounter).to.be.lessThan(10);
+        recursion();
+      }
     });
-    break;
   }
+  recursion();
+  // while (subScenes.filter(x => x.shown).length < 3) {
+  //   //write a test to check if the description is shown and if so set the shown property to true
+  //   cy.get('p.description').should('be.visible');
+  //   cy.get('p.description').then(elements => {
+  //     let descriptionText = [0].innerText;
+  //     subScenes.forEach(x => {
+  //       console.log(descriptionText);
+  //       if (x.description === descriptionText) {
+  //         x.shown = true;
+  //       }
+  //     });
+  //   });
+  //   // cy.get('main').then(elements => {
+  //   //   let descriptionText = elements[0].description();
+  //   //   cy.log(descriptionText);
+  //   // });
+  //   break;
+  // }
 });
