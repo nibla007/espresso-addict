@@ -7,14 +7,15 @@
     "test": "tests"
   },
   "scripts": {
-    "make-steps": "node ./tests/espresso-tests/cypress-tests/_generate-step-definitions.js",
+    "make-word": "node ./tests/word-tests/_auto-generate-step-definitions.js",
+    "make-espresso": "node ./tests/espresso-tests/_auto-generate-step-definitions.js",
     "test-cypress": "cypress run --browser chrome",
     "test-cypress-ui": "cypress open --browser chrome"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": [
-      "./tests/espresso-tests/cypress-tests/step_definitions/**/*.js",
-      "./tests/word-tests/cypress-tests/step_definitions/**/*.js"
+      "./tests/espresso-tests/step_definitions/**/*.js",
+      "./tests/word-tests/step_definitions/**/*.js"
     ]
   },
   "author": "",
