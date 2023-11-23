@@ -18,7 +18,6 @@ When('I press on the button', () => {
 
 Then('the game should start', () => {
   cy.get('.middle').should('be.visible');
-  let initialLetter;
   cy.get('.middle > :nth-child(2)').invoke('text').then((text) => {
     let initialLetter = text.trim();
     cy.get('.top.right').click();

@@ -7,7 +7,7 @@ Feature: Gameplay
 
   Scenario: Get points from green corner
     Given that I am playing the game
-    When I find a word
+    When I spell a word
     And I click Klar button
     Then I get points
 

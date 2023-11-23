@@ -85,6 +85,7 @@ Then('all sub scenarios should show eventually', () => {
     }
   ];
   let waitCounter = 0;
+
   function recursion() {
     cy.get('ul>li').eq(2).click();
     cy.get('.description').should('not.be.empty');
@@ -100,22 +101,4 @@ Then('all sub scenarios should show eventually', () => {
     });
   }
   recursion();
-  // while (subScenes.filter(x => x.shown).length < 3) {
-  //   //write a test to check if the description is shown and if so set the shown property to true
-  //   cy.get('p.description').should('be.visible');
-  //   cy.get('p.description').then(elements => {
-  //     let descriptionText = [0].innerText;
-  //     subScenes.forEach(x => {
-  //       console.log(descriptionText);
-  //       if (x.description === descriptionText) {
-  //         x.shown = true;
-  //       }
-  //     });
-  //   });
-  //   // cy.get('main').then(elements => {
-  //   //   let descriptionText = elements[0].description();
-  //   //   cy.log(descriptionText);
-  //   // });
-  //   break;
-  // }
 });
