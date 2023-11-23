@@ -124,6 +124,7 @@ Then('I should see the text {string}', (gameOver) => {
   // Expect to win because 5 espressos was collected.
   // Check if game over text appears
   cy.contains(gameOver).should('be.visible');
+  cy.get('.description').should('have.text', gameOver);
 
   //Check if Play again button appears
   cy.get('.choices ul li').should('be.visible');
