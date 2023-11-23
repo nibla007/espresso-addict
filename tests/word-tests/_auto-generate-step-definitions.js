@@ -1,5 +1,5 @@
 let featureFolder = './features';
-let stepDefinitionFolder = './features/step_definitions';
+let stepDefinitionFolder = './step_definitions';
 let dependenciesForSteps = 'import { Given, When, Then } from ' +
   '"@badeball/cypress-cucumber-preprocessor";';
 

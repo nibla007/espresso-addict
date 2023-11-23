@@ -14,7 +14,7 @@ Feature: Cafe Interaction
 
   Scenario: Wait in the Cafe
     Given that I am in the cafe
-    When I click the wait button three times
+    When I click the wait button until I lose health
     Then I should have lost three health
 
   Scenario: Help Button

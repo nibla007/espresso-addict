@@ -34,7 +34,7 @@ Given('that I am in the cafe', () => {
   cy.get('ul li:first').click();
 });
 
-When('I click the wait button three times', () => {
+When('I click the wait button until I lose health', () => {
   // Change until the barista looks at you
   function recursion() {
     cy.get('ul>li').eq(2).click();
