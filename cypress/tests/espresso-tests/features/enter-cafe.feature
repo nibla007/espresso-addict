@@ -25,4 +25,3 @@ Feature: Cafe Interaction
     When I click the Enter the cafe button
     When I click the Wait button enough times
     Then all sub scenarios should show eventually
-

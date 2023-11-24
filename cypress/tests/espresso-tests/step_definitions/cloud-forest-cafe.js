@@ -1,8 +1,11 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-
 let baseUrl = 'http://127.0.0.1:5500/index.html'
-When('I have waited enough times to die', () => {
+Given('I am on the start page', () => {
   cy.visit(baseUrl)
+});
+
+When('I have waited enough times to die', () => {
+  
   function recursion() {
     cy.get('ul>li').eq(1).click();
     cy.get('.description').should('not.be.empty');
@@ -22,13 +25,17 @@ Then('I should see description {string}', (description) => {
 });
 
 When('I click Go north button', () => {
-  // TODO: implement step
+  cy.get('ul>li').eq(2).click();
 });
 
-Then('I should see the {string} text', (a) => {
-  // TODO: implement step
+Then('I should see empty street {string} text', (text) => {
+  cy.get('.description').should('have.text', text);
 });
 
 When('I click Go south', () => {
-  // TODO: implement step
+  cy.get('ul>li').eq(3).click();
+});
+
+Then('I should see country-side {string} text', (text) => {
+  cy.get('.description').should('have.text', text);
 });

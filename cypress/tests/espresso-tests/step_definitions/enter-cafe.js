@@ -41,7 +41,6 @@ When('I click the wait button until I lose health', () => {
     cy.get('.description').should('not.be.empty');
     cy.get('.description').then(elements => {
       let descriptionText = elements.els[0].text();
-      cy.log(descriptionText);
       if (descriptionText != "You wait. The barista looks at you.") {
         recursion();
       }
@@ -91,7 +90,6 @@ Then('all sub scenarios should show eventually', () => {
     cy.get('.description').should('not.be.empty');
     cy.get('.description').then(elements => {
       let descriptionText = elements.els[0].text();
-      cy.log(descriptionText);
       subScenes.find(x => x.description === descriptionText).shown = true;
       if (subScenes.filter(x => x.shown).length < 3) {
         waitCounter++;

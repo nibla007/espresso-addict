@@ -5,30 +5,33 @@ Given('that I am on the game page', () => {
 });
 
 Given('that I am playing the game', () => {
-  // Retry fetch until it succeeds
-  cy.intercept('GET', '/workers/dictionaries/svenska-ord.txt'), (req) => {
-    req.headers['status'] = '200';
-  };
-  cy.get('.splash').should('not.exist', { timeout: 2000 });
+  // Intercept requests
+  cy.intercept('GET', '/workers/dictionaries/svenska-ord.txt', { fixture: 'combinations.txt' });
+  cy.intercept('GET', '/workers/dictionaries/svenska-pronomen.txt', { fixture: 'empty.txt' });
+  cy.get('.splash').should('not.exist', { timeout: 20000 });
   cy.get('.game').should('exist');
 });
 
+
 When('I spell a word', () => {
   function spellAWord() {
-    cy.wait(3000);
-    cy.get('.top.right').click();
-    cy.get('.top.right').should('not.be.empty');
-    cy.get('.description').then(elements => {
-      let initialLetter = text.trim();
-      cy.get('.top.right').click();
-      cy.log(initialLetter);
-      if ('.top.right' != ".top.right.invalid-by-timeout") {
+    cy.get('.top.right').should('not.be.disabled').click({ force: true });
+    cy.get('.top.right').should('be.visible');
+    cy.get('.top.right').first().then(initialLetter => {
+
+      let valid = Cypress.$(initialLetter).hasClass('valid');
+
+      
+      if (valid) {
+        cy.get('.top.right').should('have.class', 'valid');
+      } else {
         spellAWord();
       }
     });
-  };
+  }
   spellAWord();
 });
+
 
 When('I click Klar button', () => {
   // TODO: implement step

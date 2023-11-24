@@ -1,7 +1,0 @@
-Feature: Enter cafe
-
-  Scenario: Check that all sub scenarios exist if you wait enough times
-    Given that I am in the cafe
-    When I click the Wait button enough times
-    Then all sub scenarios should show eventually
-
