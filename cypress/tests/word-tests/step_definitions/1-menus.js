@@ -9,9 +9,9 @@ When('I click the {string} button in the navbar', (buttonName) => {
 });
 
 When('I click the {string} button', (buttonClass) => {
-  cy.get(`.${buttonClass}`).click();
+  cy.get(`${buttonClass}`).click();
 });
 
 Then('I should be on the {string} page', (buttonText) => {
-  cy.url().should('contain', buttonText);
+  cy.url().should('eq', buttonText);
 });

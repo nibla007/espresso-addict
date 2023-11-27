@@ -1,42 +1,45 @@
 const { Given, When, Then } = require("@badeball/cypress-cucumber-preprocessor");
 
 let corners = { 'top left': [], 'top right': [], 'bottom left': [], 'bottom right': [] };
+let cornerClasses = ['.top.left', '.bottom.left', '.top.right', '.bottom.right'];
 
+// Replace the original dictionary with a custom dictionary
 Given('that the original dictionary is replaced by the custom dictionary', () => {
   cy.intercept('GET', '/workers/dictionaries/svenska-ord.txt', { fixture: 'custom-dictionary.txt' });
   cy.intercept('GET', '/workers/dictionaries/svenska-pronomen.txt', { fixture: 'empty.txt' });
 });
 
 Given('I am on the game page past the loading screen', () => {
-  corners = { 'top left': [], 'top right': [], 'bottom left': [], 'bottom right': [] };
   cy.visit('/game');
   cy.wait(1000);
   cy.get('.splash').should('not.exist', { timeout: 20000 });
 });
 
-When('I claim points in one corner', () => {
-  cy.get('.valid > .take-points').click();
-});
+When('I place {int} letters in the {string} corner', (numLetters, corner) => {
+  const classOfCorner = corner.split(' ');
 
-When('I click on unlock', () => {
-  cy.get('.unlock').click();
-});
-
-When('I place {int} letters in the {string} corner', (num, cornerClasses) => {
-  const classOfCorner = cornerClasses.split(' ');
-  for (let i = 0; i < num; i++) {
+  for (let i = 0; i < numLetters; i++) {
     cy.get('.middle').children().should('have.length', 3);
     cy.get('.middle').children().eq(1).then((el) => {
-      corners[cornerClasses].push(el.text());
+      corners[corner].push(el.text());
     });
     cy.get(`.${classOfCorner.join('.')}`).click();
   }
 });
 
-Then('the {string} corner should be empty', (cornerClasses) => {
-  cy.get(`.${cornerClasses.split(' ').join('.')}`).should('not.have.class', 'valid');
-  cy.get(`.${cornerClasses.split(' ').join('.')}`).should('not.have.class', 'invalid');
-  cy.get(`.${cornerClasses.split(' ').join('.')}`).should('not.have.class', 'invalid-by-timeout');
+When('I place {int} letters in each corner', (count) => {
+  for (let classOfCorner of cornerClasses) {
+    for (let i = 0; i < count; i++) {
+      cy.get(`.middle`).children().should('have.length', 3);
+      cy.get(classOfCorner).click();
+    }
+  }
+});
+
+Then('all corners should be empty', () => {
+  cy.get(`${cornerClasses}`).should('not.have.class', 'valid');
+  cy.get(`${cornerClasses}`).should('not.have.class', 'invalid');
+  cy.get(`${cornerClasses}`).should('not.have.class', 'invalid-by-timeout');
 });
 
 Then('the letters should be in the correct order', () => {
@@ -64,6 +67,10 @@ When('I wait until a corner is invalid by timeout', () => {
   cy.get('.invalid-by-timeout', { timeout: 20000 }).should('exist');
 });
 
-Then('there should be no invalid corners', () => {
-  cy.get('.invalid-by-timeout').should('not.exist');
+Then('the game should be reset', () => {
+  cy.get('.middle').should('not.have.text', 'GAME OVER');
+  cy.get('.score').should('contain', 'POÄNG: 0');
+  cy.get('.invalid').should('not.exist');
+  cy.get('.restart-buttons').should('not.exist');
+  cy.get('invalid-by-timeout').should('not.exist');
 });
