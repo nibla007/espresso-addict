@@ -8,7 +8,6 @@ Given('I am at the {string} place', (name) => {
   cy.get('.description').should('be.visible');
 });
 
-
 Then('I should see a {string}', (description) => {
   // checks all the descriptions of the locations
   cy.get('.description').should('have.text', description);
