@@ -1,56 +1,17 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { recursion, recursionTwo, subRecursion } from './testFunctions';
+import { recursion, recursionWait, recursionTwo, subRecursion } from './testFunctions';
 
 let baseUrl = 'http://127.0.0.1:5500/index.html'
+
 Given('I am on the start page', () => {
   cy.visit(baseUrl)
 });
 
-When('I have waited enough times to die', () => {
-  recursion(1, "You health has deteriorated too much - you feel almost dead.Find a caffeine-detox clinic?" );
+Given('that I have successfully lost the game', () => {
+  recursion(1, "You health has deteriorated too much - you feel almost dead.Find a caffeine-detox clinic?")
 });
 
-When('I have waited enough times to see {string}', (description) => {
-  cy.get('ul>li').eq(2).click();
-  recursion(0, description);
-});
-
-Then('my health should be {string}', (health) => {
-  cy.get('.health > .progress > .bad > .val').should('have.text', health)
-});
-
-
-Then('I should see the exit the cafe button', () => {
-  cy.get('ul li:first').should('be.visible');
-});
-
-Then('I should have five dollars', () => {
-  cy.get('.money > .progress > .bad > .val').should('have.text', '5');
-});
-
-Then('I should have one espresso', () => {
-  cy.get('.espressocups > .progress > .bad > .val').should('have.text', '1');
-});
-
-When('I click the wait button until I lose health', () => {
-  // Change until the barista looks at you
-  recursion(2, "You wait. The barista looks at you." );
-});
-
-Then('I should have lost three health', () => {
-  cy.get('.health > .progress > .bad > .val').should('have.text', '47');
-});
-
-
-When('I click the Wait button enough times', () => {
-  // Since we are looping we actually click in the then part
-});
-
-Then('all sub scenarios should show eventually', () => {
-  subRecursion(2);
-});
-
-When('I have successfully won the game', () => {
+Given('that I have successfully won the game', () => {
   // Enter cafe
   cy.get('ul>li').eq(0).click();
 
@@ -65,8 +26,8 @@ When('I have successfully won the game', () => {
   cy.get('ul>li').eq(2).click();
 
   // Wait until see text "You sharpen your ears. You hear people laughing and buzzing to the east? Could it be a cafe?"
-  recursion(0, "You sharpen your ears. You hear people laughing and buzzing to the east? Could it be a cafe?") 
-        
+  recursion(0, "You sharpen your ears. You hear people laughing and buzzing to the east? Could it be a cafe?")
+
   // Go to the east for cafe
   cy.get('ul>li').eq(2).click();
 
@@ -110,6 +71,26 @@ When('I have successfully won the game', () => {
   recursionTwo(1, 'The barista is in a dark corner phoning a friend. You overhear parts of the conversion: "I\'m tired of pushing coffee. I just want a beer, but I\'m stuck here for like 5 more hours... Man, I tell you if someone would just bring me a beer..."', 1);
 });
 
+When('I click the {string} button until I see {string}', (button, description) => {
+  recursionWait(button, description);
+});
+
+When('I click on the {string} button', (buttonText) => {
+  cy.contains(buttonText).click();
+});
+
+Then('I should have {int} {string}', (value, stats) => {
+  cy.get(`.${stats} .val`).should('have.text', `${value}`);
+});
+
+Then('I wait until all sub scenarios are shown', () => {
+  subRecursion(2);
+});
+
+Then('I should see the exit the cafe button', () => {
+  cy.get('ul li:first').should('be.visible');
+});
+
 Then('I should see the text {string}', (gameOver) => {
   // Expect to win because 5 espressos was collected.
   // Check if game over text appears
@@ -120,15 +101,6 @@ Then('I should see the text {string}', (gameOver) => {
   cy.get('.choices ul li').should('be.visible');
 });
 
-Then('I click on the {string} button', (button) => {
-  cy.get("ul>li").eq(button).click();
-});
-
 Then('the player should see the description {string}', (description) => {
   cy.get('.description').should('have.text', description)
 });
-
-When('I have successfully lost the game', () => {
-    recursion(1, "You health has deteriorated too much - you feel almost dead.Find a caffeine-detox clinic?")     
-});
-

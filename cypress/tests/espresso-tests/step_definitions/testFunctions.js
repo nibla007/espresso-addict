@@ -1,13 +1,25 @@
-function recursion(button, description) {
-    cy.get('ul>li').eq(button).click();
+function recursionWait(button, description) {
+    cy.contains(button).click();
     cy.get('.description').should('not.be.empty');
     cy.get('.description').then(elements => {
       let descriptionText = elements.els[0].text();
       cy.log(descriptionText);
       if (descriptionText !== description) {
-        recursion(button, description);
+        recursionWait(button, description);
       }
     });
+};
+
+function recursion(button, description) {
+  cy.get('ul>li').eq(button).click();
+  cy.get('.description').should('not.be.empty');
+  cy.get('.description').then(elements => {
+    let descriptionText = elements.els[0].text();
+    cy.log(descriptionText);
+    if (descriptionText !== description) {
+      recursion(button, description);
+    }
+  });
 };
 
 function recursionTwo(button, description, buttonTwo) {
@@ -55,4 +67,4 @@ function subRecursion(button) {
     });
   }
   
-module.exports = { recursion, recursionTwo, subRecursion }
+module.exports = { recursion, recursionWait, recursionTwo, subRecursion }

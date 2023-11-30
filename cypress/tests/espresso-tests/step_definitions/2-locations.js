@@ -1,5 +1,7 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+
 let url = 'http://127.0.0.1:5500/index.html'
+
 Given('I am at the {string} place', (name) => {
   cy.visit(url);
   // intercept the start scene and replace it with scenario outline
