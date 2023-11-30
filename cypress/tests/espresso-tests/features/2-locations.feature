@@ -1,6 +1,6 @@
-Feature: Explore Different Locations
+Feature: Explore locations
 
-  Scenario Outline: Visit Various Locations(<name>)
+  Scenario Outline: Visit locations(<name>)
     Given I am at the <name> place
     Then I should see a <description>
     And I should see the correct <image>
