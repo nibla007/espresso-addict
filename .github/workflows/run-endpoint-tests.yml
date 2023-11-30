@@ -25,4 +25,7 @@ jobs:
 
       - run: nohup node index.js
 
+      - name: Start Live Server
+        run: live-server --port=5500 --entry-file=index.html
+
       - run: npm run test-cypress
