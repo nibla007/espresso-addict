@@ -1,8 +1,6 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
-const url = 'http://127.0.0.1:5500';
 Given('I am at the {string} place', (name) => {
-  cy.visit(url);
   // intercept the start scene and replace it with scenario outline
   cy.intercept('GET', '/data/location-details/cafe.json', { fixture: name });
   cy.get('.description').should('be.visible');
