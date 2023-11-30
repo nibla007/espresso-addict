@@ -1,66 +1,29 @@
 const { defineConfig } = require("cypress");
-const webpack = require("@cypress/webpack-preprocessor");
 const { addCucumberPreprocessorPlugin } = require("@badeball/cypress-cucumber-preprocessor");
+const { createEsbuildPlugin } = require("@badeball/cypress-cucumber-preprocessor/esbuild");
+const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 
-const baseUrl = 'https://word-corners.nodehill.se/';
+const baseUrl = "https://word-corners.nodehill.se";
 
-module.exports = defineConfig(
-  {
-    e2e:
-    {
-      defaultCommandTimeout: 60000,
-      baseUrl,
-      specPattern: '**/*.feature',
-      video: false,
-      screenshotOnRunFailure: false,
-      setupNodeEvents(on, config) {
-        // implement node event listeners here
+async function setupNodeEvents(on, config) {
+  await addCucumberPreprocessorPlugin(on, config);
 
-        // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
-        addCucumberPreprocessorPlugin(on, config);
+  on(
+    "file:preprocessor",
+    createBundler({
+      plugins: [createEsbuildPlugin(config)]
+    })
+  );
+  return config;
+}
 
-        on(
-          "file:preprocessor",
-          webpack(
-            {
-              webpackOptions:
-              {
-                resolve: {
-                  extensions: [".js"],
-                },
-                module: {
-                  rules:
-                    [
-                      {
-                        test: /\.feature$/,
-                        use:
-                          [
-                            {
-                              loader: "@badeball/cypress-cucumber-preprocessor/webpack",
-                              options: config,
-                            },
-                          ],
-                      },
-                    ],
-                },
-              },
-            }
-          )
-        );
-
-        on(
-          'task',
-          {
-            log(message) {
-              console.log(message)
-              return null
-            },
-          }
-        );
-
-        // Make sure to return the config object as it might have been modified by the plugin.
-        return config;
-      }
-    }
+module.exports = defineConfig({
+  e2e: {
+    defaultCommandTimeout: 15000,
+    baseUrl,
+    supportFile: false,
+    specPattern: "**/*.feature",
+    screenshotOnRunFailure: false,
+    setupNodeEvents
   }
-);
+});
