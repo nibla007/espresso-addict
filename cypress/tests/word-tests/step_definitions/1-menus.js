@@ -1,6 +1,6 @@
 const { Given, When, Then } = require("@badeball/cypress-cucumber-preprocessor");
 
-Given("that I am on the {string} page", (endpoint) => {
+Given('that I am on the {string} page', (endpoint) => {
   cy.visit(endpoint);
 });
 

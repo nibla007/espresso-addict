@@ -36,7 +36,7 @@ When('I place {int} letters in each corner', (count) => {
   }
 });
 
-Then('all corners should be empty', () => {
+Then('all corners should be open', () => {
   cy.get(`${cornerClasses}`).should('not.have.class', 'valid');
   cy.get(`${cornerClasses}`).should('not.have.class', 'invalid');
   cy.get(`${cornerClasses}`).should('not.have.class', 'invalid-by-timeout');
